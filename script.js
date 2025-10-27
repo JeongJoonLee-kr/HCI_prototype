@@ -14,6 +14,7 @@ const summarySlides = Array.from(document.querySelectorAll('.summary__slide'));
 const usageBars = document.querySelectorAll('.usage-bar');
 const summaryDelayDetailEl = document.getElementById('summary-delay-detail');
 const versionToggleButton = document.getElementById('version-toggle');
+const prototypeFrameEl = document.querySelector('.prototype-frame');
 const timerAnimationEl = document.getElementById('timer-animation');
 const timerAnimationImage = document.getElementById('timer-animation-image');
 const timerAnimationCaption = document.getElementById('timer-animation-caption');
@@ -413,6 +414,7 @@ function applyMobileSimulation() {
   showScreen('wave');
   startMobileViewportSync();
   syncMobileLayout();
+  scrollPrototypeFrameIntoView();
 }
 
 function clearMobileLayout() {
@@ -478,6 +480,19 @@ function stopMobileViewportSizing() {
   }
 }
 
+function scrollPrototypeFrameIntoView({ behavior = 'smooth', block = 'center' } = {}) {
+  if (!mobileSessionActive) {
+    return;
+  }
+  if (!prototypeFrameEl) {
+    return;
+  }
+  const scrollOptions = { behavior, block };
+  requestAnimationFrame(() => {
+    prototypeFrameEl.scrollIntoView(scrollOptions);
+  });
+}
+
 function shouldIgnoreMobileActivation(target) {
   if (!target) {
     return false;
@@ -527,7 +542,10 @@ function setupMobileLayoutHandling() {
 
   window.addEventListener('resize', scheduleSync);
   window.addEventListener('orientationchange', () => {
-    setTimeout(syncMobileLayout, 120);
+    setTimeout(() => {
+      syncMobileLayout();
+      scrollPrototypeFrameIntoView({ behavior: 'auto' });
+    }, 140);
   });
 
   syncMobileLayout();
