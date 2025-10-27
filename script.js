@@ -159,9 +159,19 @@ function updateTimerAnimationStage(elapsed) {
   }
 }
 
+function clearTimerBackground() {
+  if (SCREENS.timer) {
+    SCREENS.timer.style.removeProperty('background');
+  }
+}
+
 function updateTimerVisuals(elapsed) {
   const progress = Math.min(1, elapsed / SESSION_DURATION);
-  updateTimerBackground(progress);
+  if (prototypeVersion === 'A') {
+    updateTimerBackground(progress);
+  } else {
+    clearTimerBackground();
+  }
   updateTimerAnimationStage(elapsed);
 }
 
@@ -321,6 +331,9 @@ function applyVersion() {
       ? 'Switch to Version A'
       : 'Switch to Version B';
   }
+  if (isVersionB) {
+    clearTimerBackground();
+  }
   syncTimerAnimationVisibility();
   if (isVersionB) {
     if (state === 'timer' && timerStart) {
@@ -331,6 +344,10 @@ function applyVersion() {
     }
   } else {
     currentAnimationStage = null;
+    if (state === 'timer' && timerStart) {
+      const elapsed = (performance.now() - timerStart) / 1000;
+      updateTimerVisuals(Math.max(elapsed, 0));
+    }
   }
 }
 
