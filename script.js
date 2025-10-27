@@ -18,6 +18,7 @@ const timerAnimationEl = document.getElementById('timer-animation');
 const timerAnimationImage = document.getElementById('timer-animation-image');
 const timerAnimationCaption = document.getElementById('timer-animation-caption');
 const bodyEl = document.body;
+const rootEl = document.documentElement;
 const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
 const isTouchCapableDevice =
   'ontouchstart' in window || (navigator.maxTouchPoints || navigator.msMaxTouchPoints || 0) > 0;
@@ -58,6 +59,7 @@ let prototypeVersion = 'A';
 let currentAnimationStage = null;
 let mobileSessionActive = false;
 let suppressNextWaveGesture = false;
+let stopMobileViewportSync = null;
 
 const recommendedDuration = SESSION_DURATION;
 let lastSessionStats = {
@@ -409,6 +411,7 @@ function applyMobileSimulation() {
   bodyEl.classList.remove('mobile-intro');
   suppressNextWaveGesture = true;
   showScreen('wave');
+  startMobileViewportSync();
   syncMobileLayout();
 }
 
@@ -416,6 +419,7 @@ function clearMobileLayout() {
   bodyEl.classList.remove('is-mobile', 'mobile-intro', 'mobile-sim');
   mobileSessionActive = false;
   suppressNextWaveGesture = false;
+  stopMobileViewportSizing();
 }
 
 function syncMobileLayout() {
@@ -427,8 +431,50 @@ function syncMobileLayout() {
   if (mobileSessionActive) {
     bodyEl.classList.add('mobile-sim');
     bodyEl.classList.remove('mobile-intro');
+    updateMobileViewportSizing();
   } else {
     applyMobileIntro();
+  }
+}
+
+function updateMobileViewportSizing() {
+  if (!rootEl) {
+    return;
+  }
+  const viewport = window.visualViewport;
+  const height = viewport ? viewport.height : window.innerHeight;
+  rootEl.style.setProperty('--mobile-viewport-height', `${height}px`);
+}
+
+function startMobileViewportSync() {
+  stopMobileViewportSizing();
+  updateMobileViewportSizing();
+  const viewport = window.visualViewport;
+  if (viewport) {
+    const handler = () => updateMobileViewportSizing();
+    viewport.addEventListener('resize', handler);
+    viewport.addEventListener('scroll', handler);
+    stopMobileViewportSync = () => {
+      viewport.removeEventListener('resize', handler);
+      viewport.removeEventListener('scroll', handler);
+      stopMobileViewportSync = null;
+    };
+  } else {
+    const handler = () => updateMobileViewportSizing();
+    window.addEventListener('resize', handler);
+    stopMobileViewportSync = () => {
+      window.removeEventListener('resize', handler);
+      stopMobileViewportSync = null;
+    };
+  }
+}
+
+function stopMobileViewportSizing() {
+  if (typeof stopMobileViewportSync === 'function') {
+    stopMobileViewportSync();
+  }
+  if (rootEl) {
+    rootEl.style.removeProperty('--mobile-viewport-height');
   }
 }
 
