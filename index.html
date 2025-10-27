@@ -16,11 +16,21 @@
             to discourage water waste at the sink.
           </p>
         </div>
-        <div class="page__instructions">
-          <p>
-            <span class="wave-icon" aria-hidden="true">🖐️</span>
-            Click anywhere or press the space bar to simulate waving at the sensor.
-          </p>
+        <div class="page__actions">
+          <button
+            class="version-toggle"
+            id="version-toggle"
+            type="button"
+            aria-pressed="false"
+          >
+            Switch to Version B
+          </button>
+          <div class="page__instructions">
+            <p>
+              <span class="wave-icon" aria-hidden="true">🖐️</span>
+              Click anywhere or press the space bar to simulate waving at the sensor.
+            </p>
+          </div>
         </div>
       </header>
 
@@ -41,6 +51,15 @@
             <div class="timer">
               <div class="timer__label">Stay water wise!</div>
               <div class="timer__value" id="timer-value">00:30</div>
+              <div class="timer__animation" id="timer-animation" hidden>
+                <img
+                  id="timer-animation-image"
+                  class="timer__animation-image"
+                  src="assets/running_cat_slow.gif"
+                  alt="Animated cat jogging in place"
+                />
+                <p class="timer__animation-caption" id="timer-animation-caption">Easy pace</p>
+              </div>
               <p class="timer__hint">Wave again when you finish washing.</p>
             </div>
           </div>
