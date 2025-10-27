@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water-Wise Handwashing Prototype</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page__header">
+        <div>
+          <h1>Water-Wise Handwashing Prototype</h1>
+          <p class="page__subtitle">
+            Tangible interface concept that combines an IR sensor with visual feedback
+            to discourage water waste at the sink.
+          </p>
+        </div>
+        <div class="page__instructions">
+          <p>
+            <span class="wave-icon" aria-hidden="true">🖐️</span>
+            Click anywhere or press the space bar to simulate waving at the sensor.
+          </p>
+        </div>
+      </header>
+
+      <main class="page__content">
+        <section class="prototype-frame" aria-label="Prototype display">
+          <div class="screen screen--wave" data-screen="wave">
+            <div class="screen__content">
+              <div class="screen__emoji" aria-hidden="true">🖐️</div>
+              <h2>Wave your hand to start/end!</h2>
+              <p class="screen__description">
+                Hold your hand in front of the IR sensor to begin a washing session or end it when
+                you're done.
+              </p>
+            </div>
+          </div>
+
+          <div class="screen screen--timer" data-screen="timer" hidden>
+            <div class="timer">
+              <div class="timer__label">Stay water wise!</div>
+              <div class="timer__value" id="timer-value">00:30</div>
+              <p class="timer__hint">Wave again when you finish washing.</p>
+            </div>
+          </div>
+
+          <div class="screen screen--summary" data-screen="summary" hidden>
+            <div class="summary">
+              <div class="summary__carousel" role="group" aria-live="polite">
+                <article class="summary__slide" data-slide="0">
+                  <header>
+                    <h2>Session complete!</h2>
+                    <p class="summary__timestamp" id="summary-timestamp"></p>
+                  </header>
+                  <div class="summary__stat-cards">
+                    <div class="stat-card">
+                      <h3>Water saved</h3>
+                      <p class="stat-card__value" id="summary-water-saved">0.0 L</p>
+                      <p class="stat-card__detail" id="summary-duration"></p>
+                    </div>
+                    <div class="stat-card">
+                      <h3>Tap off delay</h3>
+                      <p class="stat-card__value" id="summary-delay">0.0 s</p>
+                      <p class="stat-card__detail" id="summary-delay-detail">Great reaction time!</p>
+                    </div>
+                  </div>
+                  <div class="summary__qr">
+                    <div class="qr-card" aria-label="QR code to download the session summary">
+                      <div class="qr" aria-hidden="true">
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
+                      </div>
+                      <p>Scan to take this summary with you.</p>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="summary__slide" data-slide="1" hidden>
+                  <header>
+                    <h2>Weekly usage overview</h2>
+                    <p>Track how each day compares to the target.</p>
+                  </header>
+                  <ul class="usage-list">
+                    <li>
+                      <span>Monday</span>
+                      <div class="usage-bar" data-amount="280"><span>280 L</span></div>
+                    </li>
+                    <li>
+                      <span>Tuesday</span>
+                      <div class="usage-bar" data-amount="245"><span>245 L</span></div>
+                    </li>
+                    <li>
+                      <span>Wednesday</span>
+                      <div class="usage-bar" data-amount="310"><span>310 L</span></div>
+                    </li>
+                    <li>
+                      <span>Thursday</span>
+                      <div class="usage-bar" data-amount="190"><span>190 L</span></div>
+                    </li>
+                    <li>
+                      <span>Friday</span>
+                      <div class="usage-bar" data-amount="232"><span>232 L</span></div>
+                    </li>
+                    <li>
+                      <span>Saturday</span>
+                      <div class="usage-bar" data-amount="424"><span>424 L</span></div>
+                    </li>
+                    <li>
+                      <span>Sunday</span>
+                      <div class="usage-bar" data-amount="156"><span>156 L</span></div>
+                    </li>
+                  </ul>
+                  <div class="summary__tips">
+                    <h3>Water saving tips</h3>
+                    <ul>
+                      <li>Turn off the tap while brushing your teeth.</li>
+                      <li>Fix leaking fixtures immediately.</li>
+                      <li>Use the eco mode on dishwashers and washing machines.</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="summary__slide" data-slide="2" hidden>
+                  <header>
+                    <h2>Alerts &amp; connected spaces</h2>
+                    <p>Review unusual usage patterns and connected rooms.</p>
+                  </header>
+                  <div class="alerts">
+                    <div class="alert alert--warning">
+                      <strong>High usage detected</strong>
+                      <p>Yesterday at 2:30 PM</p>
+                    </div>
+                    <div class="alert alert--success">
+                      <strong>Weekly goal achieved!</strong>
+                      <p>2 days ago</p>
+                    </div>
+                  </div>
+                  <div class="summary__grid">
+                    <div class="stat-card">
+                      <h3>Rooms monitored</h3>
+                      <p class="stat-card__value">8</p>
+                    </div>
+                    <div class="stat-card">
+                      <h3>Devices connected</h3>
+                      <p class="stat-card__value">12</p>
+                    </div>
+                    <div class="stat-card">
+                      <h3>Total saved</h3>
+                      <p class="stat-card__value">2.4k L</p>
+                    </div>
+                    <div class="stat-card">
+                      <h3>Cost saved</h3>
+                      <p class="stat-card__value">$156</p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <footer class="summary__footer">
+                <p>Next summary in <span id="summary-countdown">5</span>s • Wave to return to the start screen.</p>
+              </footer>
+            </div>
+          </div>
+        </section>
+
+        <aside class="prototype-notes">
+          <h2>Prototype notes</h2>
+          <ul>
+            <li>The cardboard housing keeps the phone display within the user's line of sight.</li>
+            <li>An IR sensor detects when hands move near the sink to start/stop the timer.</li>
+            <li>Visual feedback shifts from calm greens to urgent reds to discourage water waste.</li>
+            <li>Summary cards rotate every 5 seconds to avoid overwhelming the user.</li>
+            <li>A QR hand-off lets users keep their personal conservation stats.</li>
+          </ul>
+        </aside>
+      </main>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
