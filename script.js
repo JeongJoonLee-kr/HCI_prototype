@@ -440,12 +440,16 @@ function syncMobileLayout() {
 }
 
 function updateMobileViewportSizing() {
-  if (!rootEl) {
-    return;
-  }
-  const viewport = window.visualViewport;
-  const height = viewport ? viewport.height : window.innerHeight;
-  rootEl.style.setProperty('--mobile-viewport-height', `${height}px`);
+    if (!rootEl) {
+        return;
+    }
+    
+    const viewport = window.visualViewport;
+    const height = viewport ? viewport.height : window.innerHeight;
+    
+    // 최소 높이 보장
+    const safeHeight = Math.max(height, 360);
+    rootEl.style.setProperty('--mobile-viewport-height', `${safeHeight}px`);
 }
 
 function startMobileViewportSync() {
@@ -511,6 +515,7 @@ function handleMobileIntroActivation(event) {
 }
 
 function setupMobileLayoutHandling() {
+  updateMobileViewportSizing();
   const activationHandler = (event) => {
     handleMobileIntroActivation(event);
   };
