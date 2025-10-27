@@ -67,16 +67,14 @@
                   </div>
                   <div class="summary__qr">
                     <div class="qr-card" aria-label="QR code to download the session summary">
-                      <img
-                        src="assets/session-qr.png"
-                        alt="QR code leading to the mobile handoff"
-                        loading="lazy"
-                      />
-                      <div class="qr-card__fallback" role="status" hidden>
-                        <span class="qr-card__fallback-icon" aria-hidden="true">📷</span>
-                        <p>Place <code>session-qr.png</code> in the <code>assets</code> folder to show the QR code.</p>
+                      <div class="qr" aria-hidden="true">
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div><div></div>
                       </div>
-                      <small>Scan to take this summary with you.</small>
+                      <p>Scan to take this summary with you.</p>
                     </div>
                   </div>
                 </article>
@@ -159,112 +157,6 @@
                       <p class="stat-card__value">$156</p>
                     </div>
                   </div>
-                </article>
-
-                <article class="summary__slide" data-slide="3" hidden>
-                  <header>
-                    <h2>Behaviour insights</h2>
-                    <p>See how your handwashing sessions trend over time.</p>
-                  </header>
-                  <div class="summary__insights">
-                    <div class="summary__insight-chart" role="img" aria-label="Line chart showing gradual water reduction across the week">
-                      <svg viewBox="0 0 320 140" preserveAspectRatio="none">
-                        <polyline
-                          fill="none"
-                          stroke="rgba(77, 224, 165, 0.8)"
-                          stroke-width="6"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          points="0,110 40,120 80,90 120,80 160,70 200,60 240,55 280,45 320,38"
-                        ></polyline>
-                        <polyline
-                          fill="none"
-                          stroke="rgba(255, 255, 255, 0.25)"
-                          stroke-width="2"
-                          stroke-dasharray="6 8"
-                          points="0,95 320,35"
-                        ></polyline>
-                      </svg>
-                      <span>
-                        <strong>Liters / session</strong>
-                        <em>Target trend</em>
-                      </span>
-                    </div>
-                    <div class="summary__insight-row">
-                      <div class="summary__insight-card">
-                        <h3>Average session</h3>
-                        <strong>27.4 s</strong>
-                        <p>Down 8% from last week.</p>
-                      </div>
-                      <div class="summary__insight-card">
-                        <h3>Water saved</h3>
-                        <strong>1.4 L</strong>
-                        <p>Per wash compared to baseline.</p>
-                      </div>
-                      <div class="summary__insight-card">
-                        <h3>Prompt response</h3>
-                        <strong>92%</strong>
-                        <p>Sessions ended within 2s of alert.</p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="summary__slide" data-slide="4" hidden>
-                  <header>
-                    <h2>Habits to celebrate next</h2>
-                    <p>Micro-goals to keep the sustainable streak going.</p>
-                  </header>
-                  <ul class="summary__habit-list">
-                    <li class="summary__habit-item">
-                      <div class="summary__habit-indicator">1</div>
-                      <div>
-                        <strong>Hold steady at 25s</strong>
-                        <p>Aim for three consecutive days below the recommended limit.</p>
-                      </div>
-                    </li>
-                    <li class="summary__habit-item">
-                      <div class="summary__habit-indicator">2</div>
-                      <div>
-                        <strong>Wave to finish quicker</strong>
-                        <p>Cut the tap-off delay under 1s for five sessions.</p>
-                      </div>
-                    </li>
-                    <li class="summary__habit-item">
-                      <div class="summary__habit-indicator">3</div>
-                      <div>
-                        <strong>Share your progress</strong>
-                        <p>Scan the QR and invite a friend to compare weekly savings.</p>
-                      </div>
-                    </li>
-                  </ul>
-                </article>
-
-                <article class="summary__slide" data-slide="5" hidden>
-                  <header>
-                    <h2>Eco impact snapshot</h2>
-                    <p>How this session contributes to the wider campus savings.</p>
-                  </header>
-                  <div class="summary__impact-grid">
-                    <div class="impact-card">
-                      <h3>Campus total</h3>
-                      <strong>182 kL</strong>
-                      <p>Saved in the last 30 days.</p>
-                    </div>
-                    <div class="impact-card">
-                      <h3>Carbon offset</h3>
-                      <strong>72 kg</strong>
-                      <p>Equivalent CO₂ avoided.</p>
-                    </div>
-                    <div class="impact-card">
-                      <h3>Refillable bottles</h3>
-                      <strong>3640</strong>
-                      <p>Not filled thanks to mindful washing.</p>
-                    </div>
-                  </div>
-                  <p class="impact-note">
-                    Keep sessions under the recommended time to stay on track for the semester goal of 250 kL saved.
-                  </p>
                 </article>
               </div>
               <footer class="summary__footer">
