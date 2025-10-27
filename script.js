@@ -10,7 +10,7 @@ const summaryWaterSavedEl = document.getElementById('summary-water-saved');
 const summaryDurationEl = document.getElementById('summary-duration');
 const summaryDelayEl = document.getElementById('summary-delay');
 const summaryCountdownEl = document.getElementById('summary-countdown');
-const summarySlides = Array.from(document.querySelectorAll('.summary__slide'));
+let summarySlides = [];
 const usageBars = document.querySelectorAll('.usage-bar');
 const summaryDelayDetailEl = document.getElementById('summary-delay-detail');
 const qrImageEl = document.querySelector('.qr-card img');
@@ -18,7 +18,7 @@ const qrFallbackEl = document.querySelector('.qr-card__fallback');
 
 const SESSION_DURATION = 30; // seconds
 const SUMMARY_INTERVAL = 5000;
-const SUMMARY_RESET_TIMEOUT = summarySlides.length * SUMMARY_INTERVAL + 5000;
+const SUMMARY_RESET_BUFFER = 5000;
 
 let state = 'wave';
 let timerStart = null;
@@ -92,12 +92,20 @@ function updateTimerBackground(progress) {
     ${color}`;
 }
 
+function captureSummarySlides() {
+  summarySlides = Array.from(document.querySelectorAll('.summary__slide'));
+}
+
 function resetUsageBars() {
   usageBars.forEach((bar) => {
     const amount = Number(bar.dataset.amount);
     const normalized = Math.min(1, amount / 450);
     bar.style.setProperty('--usage', normalized.toString());
   });
+}
+
+function getSummaryResetTimeout() {
+  return summarySlides.length * SUMMARY_INTERVAL + SUMMARY_RESET_BUFFER;
 }
 
 function startTimer() {
@@ -169,6 +177,10 @@ function updateSummarySlideContent() {
 }
 
 function showSummarySlide(index) {
+  if (!summarySlides.length) {
+    return;
+  }
+
   summarySlides.forEach((slide, slideIndex) => {
     if (slideIndex === index) {
       slide.removeAttribute('hidden');
@@ -184,6 +196,10 @@ function showSummarySlide(index) {
 function startSummaryRotation() {
   if (summaryInterval) {
     clearInterval(summaryInterval);
+  }
+
+  if (!summarySlides.length) {
+    return;
   }
 
   summaryInterval = setInterval(() => {
@@ -203,10 +219,11 @@ function scheduleSummaryReset() {
   }
   summaryTimeout = setTimeout(() => {
     returnToWave();
-  }, SUMMARY_RESET_TIMEOUT);
+  }, getSummaryResetTimeout());
 }
 
 function startSummary() {
+  captureSummarySlides();
   updateSummarySlideContent();
   showScreen('summary');
   showSummarySlide(0);
@@ -249,6 +266,7 @@ function handleKeydown(event) {
 
 function init() {
   resetUsageBars();
+  captureSummarySlides();
   document.addEventListener('click', handleWaveGesture);
   document.addEventListener('keydown', handleKeydown);
   initQrFallback();
