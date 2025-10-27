@@ -178,11 +178,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  height: 100%;
 }
 
 .summary__carousel {
-  min-height: 360px;
   position: relative;
+  flex: 1 1 auto;
+  min-height: clamp(320px, 45vh, 480px);
 }
 
 .summary__slide {
@@ -192,10 +194,23 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 1.5rem;
   padding: clamp(1.5rem, 3vw, 2.5rem);
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
   opacity: 1;
   transition: opacity 0.35s ease, transform 0.35s ease;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+}
+
+.summary__slide::-webkit-scrollbar {
+  width: 8px;
+}
+
+.summary__slide::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
 }
 
 .summary__slide[hidden] {
@@ -251,34 +266,14 @@ body {
   width: min(220px, 100%);
 }
 
-.qr {
-  --grid-size: 5;
-  width: 140px;
-  aspect-ratio: 1 / 1;
-  display: grid;
-  grid-template-columns: repeat(var(--grid-size), 1fr);
-  gap: 6px;
-  padding: 0.75rem;
-  background: #fff;
+.qr-card__image {
+  width: 100%;
+  max-width: 160px;
+  justify-self: center;
   border-radius: 0.75rem;
-}
-
-.qr div {
-  background: #000;
-  border-radius: 2px;
-  opacity: 0.85;
-}
-
-.qr div:nth-child(odd) {
-  opacity: 0.9;
-}
-
-.qr div:nth-child(3n) {
-  opacity: 0.35;
-}
-
-.qr div:nth-child(4n) {
-  opacity: 0.65;
+  background: #fff;
+  padding: 0.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
 .summary__tips {
