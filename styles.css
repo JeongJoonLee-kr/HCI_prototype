@@ -578,7 +578,7 @@ body.mobile-sim .page__content {
 
 body.mobile-sim .prototype-frame {
   width: min(100vw, calc(var(--mobile-viewport-height) * (19 / 6)));
-  height: auto;
+  height: min(var(--mobile-viewport-height), calc(100vw * (6 / 19)));
   margin: 0 auto;
   padding: clamp(0.75rem, 4vw, 1.5rem);
   border-radius: 0;
