@@ -230,6 +230,16 @@ body {
   font-size: 1.05rem;
 }
 
+body.version-b .timer {
+  gap: 1.5rem;
+}
+
+body.version-b .timer__label,
+body.version-b .timer__hint,
+body.version-b .timer__animation-caption {
+  display: none;
+}
+
 .summary {
   width: 100%;
   padding: clamp(2rem, 4vw, 3rem);
