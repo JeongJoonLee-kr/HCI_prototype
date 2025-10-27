@@ -18,6 +18,9 @@ const timerAnimationEl = document.getElementById('timer-animation');
 const timerAnimationImage = document.getElementById('timer-animation-image');
 const timerAnimationCaption = document.getElementById('timer-animation-caption');
 const bodyEl = document.body;
+const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
+const isTouchCapableDevice =
+  'ontouchstart' in window || (navigator.maxTouchPoints || navigator.msMaxTouchPoints || 0) > 0;
 
 const SESSION_DURATION = 30; // seconds
 const SUMMARY_INTERVAL = 5000;
@@ -53,6 +56,8 @@ let activeSlideIndex = 0;
 let summaryCountdown = SUMMARY_INTERVAL / 1000;
 let prototypeVersion = 'A';
 let currentAnimationStage = null;
+let mobileSessionActive = false;
+let suppressNextWaveGesture = false;
 
 const recommendedDuration = SESSION_DURATION;
 let lastSessionStats = {
@@ -351,7 +356,14 @@ function applyVersion() {
   }
 }
 
-function handleWaveGesture() {
+function handleWaveGesture(event) {
+  if (bodyEl.classList.contains('mobile-intro')) {
+    return;
+  }
+  if (suppressNextWaveGesture) {
+    suppressNextWaveGesture = false;
+    return;
+  }
   if (state === 'wave') {
     startTimer();
   } else if (state === 'timer') {
@@ -362,6 +374,9 @@ function handleWaveGesture() {
 }
 
 function handleKeydown(event) {
+  if (bodyEl.classList.contains('mobile-intro')) {
+    return;
+  }
   if (event.code === 'Space') {
     if (
       event.target &&
@@ -375,9 +390,107 @@ function handleKeydown(event) {
   }
 }
 
+function shouldUseMobileLayout() {
+  const shortHeight = window.innerHeight <= 900;
+  return mobileMediaQuery.matches || (isTouchCapableDevice && shortHeight);
+}
+
+function applyMobileIntro() {
+  mobileSessionActive = false;
+  bodyEl.classList.add('is-mobile');
+  bodyEl.classList.add('mobile-intro');
+  bodyEl.classList.remove('mobile-sim');
+}
+
+function applyMobileSimulation() {
+  mobileSessionActive = true;
+  bodyEl.classList.add('is-mobile');
+  bodyEl.classList.add('mobile-sim');
+  bodyEl.classList.remove('mobile-intro');
+  suppressNextWaveGesture = true;
+  showScreen('wave');
+  syncMobileLayout();
+}
+
+function clearMobileLayout() {
+  bodyEl.classList.remove('is-mobile', 'mobile-intro', 'mobile-sim');
+  mobileSessionActive = false;
+  suppressNextWaveGesture = false;
+}
+
+function syncMobileLayout() {
+  if (!shouldUseMobileLayout()) {
+    clearMobileLayout();
+    return;
+  }
+  bodyEl.classList.add('is-mobile');
+  if (mobileSessionActive) {
+    bodyEl.classList.add('mobile-sim');
+    bodyEl.classList.remove('mobile-intro');
+  } else {
+    applyMobileIntro();
+  }
+}
+
+function shouldIgnoreMobileActivation(target) {
+  if (!target) {
+    return false;
+  }
+  return Boolean(target.closest('[data-mobile-intro-ignore]'));
+}
+
+function handleMobileIntroActivation(event) {
+  if (!bodyEl.classList.contains('mobile-intro')) {
+    return;
+  }
+  if (shouldIgnoreMobileActivation(event.target)) {
+    return;
+  }
+  applyMobileSimulation();
+}
+
+function setupMobileLayoutHandling() {
+  const activationHandler = (event) => {
+    handleMobileIntroActivation(event);
+  };
+  document.addEventListener('pointerdown', activationHandler);
+  if (!window.PointerEvent) {
+    document.addEventListener('touchstart', activationHandler, { passive: true });
+  }
+
+  const handleMediaQueryChange = () => {
+    syncMobileLayout();
+  };
+
+  if (typeof mobileMediaQuery.addEventListener === 'function') {
+    mobileMediaQuery.addEventListener('change', handleMediaQueryChange);
+  } else if (typeof mobileMediaQuery.addListener === 'function') {
+    mobileMediaQuery.addListener(handleMediaQueryChange);
+  }
+
+  let resizeSyncRaf = null;
+  const scheduleSync = () => {
+    if (resizeSyncRaf) {
+      cancelAnimationFrame(resizeSyncRaf);
+    }
+    resizeSyncRaf = requestAnimationFrame(() => {
+      resizeSyncRaf = null;
+      syncMobileLayout();
+    });
+  };
+
+  window.addEventListener('resize', scheduleSync);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(syncMobileLayout, 120);
+  });
+
+  syncMobileLayout();
+}
+
 function init() {
   resetUsageBars();
   applyVersion();
+  setupMobileLayoutHandling();
   if (versionToggleButton) {
     versionToggleButton.addEventListener('click', (event) => {
       event.stopPropagation();
