@@ -118,12 +118,6 @@ function updateTimerBackground(progress) {
     ${color}`;
 }
 
-function clearTimerBackground() {
-  if (SCREENS.timer) {
-    SCREENS.timer.style.background = '';
-  }
-}
-
 function syncTimerAnimationVisibility() {
   if (!timerAnimationEl) {
     return;
@@ -167,11 +161,7 @@ function updateTimerAnimationStage(elapsed) {
 
 function updateTimerVisuals(elapsed) {
   const progress = Math.min(1, elapsed / SESSION_DURATION);
-  if (prototypeVersion === 'A') {
-    updateTimerBackground(progress);
-  } else {
-    clearTimerBackground();
-  }
+  updateTimerBackground(progress);
   updateTimerAnimationStage(elapsed);
 }
 
@@ -333,7 +323,6 @@ function applyVersion() {
   }
   syncTimerAnimationVisibility();
   if (isVersionB) {
-    clearTimerBackground();
     if (state === 'timer' && timerStart) {
       const elapsed = (performance.now() - timerStart) / 1000;
       updateTimerVisuals(Math.max(elapsed, 0));
@@ -342,12 +331,6 @@ function applyVersion() {
     }
   } else {
     currentAnimationStage = null;
-    if (state === 'timer' && timerStart) {
-      const elapsed = (performance.now() - timerStart) / 1000;
-      updateTimerVisuals(Math.max(elapsed, 0));
-    } else {
-      updateTimerBackground(0);
-    }
   }
 }
 
